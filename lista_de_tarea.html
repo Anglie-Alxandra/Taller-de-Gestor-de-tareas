@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de tareas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            background-color: #f47bc4; /* Color de fondo de la página */
+        }
+        #taskInputContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #f50dc7; /* Color de fondo del contenedor de entrada */
+            padding: 15px;
+            border-radius: 10px;
+        }
+        #buttonsContainer button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .taskTable {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 20px;
+        }
+        .taskColumn {
+            display: table-cell;
+            vertical-align: top;
+            border: 1px solid black;
+            padding: 10px;
+            width: 45%;
+            background-color: #e8b2db; /* Color de fondo de los cuadros */
+            border-radius: 10px;
+        }
+        .taskItem {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            background-color: #ef8ed0; /* Color de fondo de las tareas */
+            border-radius: 5px;
+        }
+        .statusButton, .deleteButton {
+            margin-left: 5px;
+            padding: 2px 5px;
+            cursor: pointer;
+            border: none;
+            color: white;
+        }
+        .statusButton {
+            background-color: rgb(221, 144, 192);
+        }
+        .deleteButton {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div id="taskInputContainer">
+        <input type="text" id="taskInput" placeholder="Ingresar tarea">
+        <div id="buttonsContainer">
+            <button id="easyButton" style="background-color: lightgreen;">Fácil</button>
+            <button id="difficultButton" style="background-color: red;">Difícil</button>
+            <button id="saveButton">Guardar</button>
+        </div>
+    </div>
+    <div class="taskTable">
+        <div id="easyTaskContainer" class="taskColumn">
+            <h3>Fácil</h3>
+        </div>
+        <div id="difficultTaskContainer" class="taskColumn">
+            <h3>Complicada</h3>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const easyButton = document.getElementById('easyButton');
+        const difficultButton = document.getElementById('difficultButton');
+        const saveButton = document.getElementById('saveButton');
+        const easyTaskContainer = document.getElementById('easyTaskContainer');
+        const difficultTaskContainer = document.getElementById('difficultTaskContainer');
+
+        let selectedDifficulty = 'easy'; 
+        easyButton.addEventListener('click', () => {
+            selectedDifficulty = 'easy';
+            easyButton.style.border = '2px solid black';
+            difficultButton.style.border = 'none';
+        });
+
+        difficultButton.addEventListener('click', () => {
+            selectedDifficulty = 'difficult';
+            difficultButton.style.border = '2px solid black';
+            easyButton.style.border = 'none';
+        });
+
+        saveButton.addEventListener('click', () => {
+            if (taskInput.value.trim() !== '') {
+                const newTask = document.createElement('div');
+                newTask.classList.add('taskItem');
+
+                const taskText = document.createElement('span');
+                taskText.textContent = taskInput.value;
+                newTask.appendChild(taskText);
+
+                const statusButton = document.createElement('button');
+                statusButton.textContent = 'Realizado';
+                statusButton.classList.add('statusButton');
+                newTask.appendChild(statusButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Eliminar';
+                deleteButton.classList.add('deleteButton');
+
+                const checkBox = document.createElement('input');
+                checkBox.type = 'checkbox';
+                newTask.appendChild(checkBox);
+
+                newTask.appendChild(deleteButton);
+
+                if (selectedDifficulty === 'easy') {
+                    easyTaskContainer.appendChild(newTask);
+                } else {
+                    difficultTaskContainer.appendChild(newTask);
+                }
+                statusButton.addEventListener('click', () => {
+                    taskText.style.textDecoration = 'line-through';
+                    statusButton.disabled = true;
+                });
+
+                deleteButton.addEventListener('click', () => {
+                    newTask.parentNode.removeChild(newTask);
+                });
+
+                taskInput.value = ''; t
+            }
+        });
+    </script>
+</body>
+</html>
